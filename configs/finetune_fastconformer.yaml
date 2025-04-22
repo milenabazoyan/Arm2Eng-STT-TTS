@@ -1,0 +1,204 @@
+---
+name: "FastConformer-Hybrid-Transducer-CTC-BPE-Finetuning"
+
+init_from_nemo_model:
+  model0:
+    path: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/stt_hy_fastconformer_hybrid_large_pc.nemo"
+
+
+model:
+  sample_rate: 16000
+  compute_eval_loss: false
+  log_prediction: true
+  skip_nan_grad: false
+
+  model_defaults:
+    enc_hidden: ${model.encoder.d_model}
+    pred_hidden: 640
+    joint_hidden: 640
+
+  train_ds:
+    manifest_filepath: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/manifest_train_abs.jsonl"
+    sample_rate: ${model.sample_rate}
+    batch_size: 32
+    shuffle: true
+    num_workers: 8
+    pin_memory: true
+    max_duration: 20
+    min_duration: 0.1
+    is_tarred: false
+    tarred_audio_filepaths: null
+    shuffle_n: 2048
+    bucketing_strategy: "synced_randomized"
+    bucketing_batch_size: null
+
+  validation_ds:
+    manifest_filepath: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/manifest_val_abs.jsonl"
+    sample_rate: ${model.sample_rate}
+    batch_size: 16
+    shuffle: false
+    use_start_end_token: false
+    num_workers: 8
+    pin_memory: true
+
+  test_ds:
+    manifest_filepath: null
+    sample_rate: ${model.sample_rate}
+    batch_size: 16
+    shuffle: false
+    use_start_end_token: false
+    num_workers: 8
+    pin_memory: true
+
+  tokenizer:
+    dir: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM"
+    type: bpe
+    model_path: "/content/drive/MyDrive/Capstone/tokenizer/56c7ec45a6a84b258c1d87417ed8672e_tokenizer.model"
+    vocab_path: "/content/drive/MyDrive/Capstone/tokenizer/a66c4311cce54386973571e261fd4b32_vocab.txt"
+    spe_tokenizer_vocab: "/content/drive/MyDrive/Capstone/tokenizer/9482a6c252f94776b9e1b86bbca8963f_tokenizer.vocab"
+
+  preprocessor:
+    _target_: nemo.collections.asr.modules.AudioToMelSpectrogramPreprocessor
+    sample_rate: ${model.sample_rate}
+    normalize: "per_feature"
+    window_size: 0.025
+    window_stride: 0.01
+    window: "hann"
+    features: 80
+    n_fft: 512
+    frame_splicing: 1
+    dither: 1e-05
+    pad_to: 0
+
+  spec_augment:
+    _target_: nemo.collections.asr.modules.SpectrogramAugmentation
+    freq_masks: 2
+    time_masks: 10
+    freq_width: 27
+    time_width: 0.05
+
+  encoder:
+    _target_: nemo.collections.asr.modules.ConformerEncoder
+    feat_in: ${model.preprocessor.features}
+    feat_out: -1
+    n_layers: 17
+    d_model: 512
+    use_bias: true
+    subsampling: dw_striding
+    subsampling_factor: 8
+    subsampling_conv_channels: 256
+    ff_expansion_factor: 4
+    self_attention_model: rel_pos
+    n_heads: 8
+    att_context_size: [-1, -1]
+    att_context_style: regular
+    xscaling: true
+    pos_emb_max_len: 5000
+    conv_kernel_size: 9
+    conv_norm_type: "batch_norm"
+    dropout: 0.1
+    dropout_pre_encoder: 0.1
+    dropout_emb: 0.0
+    dropout_att: 0.1
+    stochastic_depth_drop_prob: 0.0
+    stochastic_depth_mode: linear
+    stochastic_depth_start_layer: 1
+
+  decoder:
+    _target_: nemo.collections.asr.modules.RNNTDecoder
+    normalization_mode: null
+    random_state_sampling: false
+    blank_as_pad: true
+    prednet:
+      pred_hidden: ${model.model_defaults.pred_hidden}
+      pred_rnn_layers: 1
+      t_max: null
+      dropout: 0.2
+
+  joint:
+    _target_: nemo.collections.asr.modules.RNNTJoint
+    log_softmax: null
+    preserve_memory: false
+    fuse_loss_wer: true
+    fused_batch_size: 4
+    jointnet:
+      joint_hidden: ${model.model_defaults.joint_hidden}
+      activation: relu
+      dropout: 0.2
+
+  decoding:
+    strategy: greedy_batch
+    greedy:
+      max_symbols: 10
+    beam:
+      beam_size: 2
+      return_best_hypothesis: false
+      score_norm: true
+      tsd_max_sym_exp: 50
+      alsd_max_target_len: 2.0
+
+  aux_ctc:
+    ctc_loss_weight: 0.3
+    use_cer: false
+    ctc_reduction: mean_batch
+    decoder:
+      _target_: nemo.collections.asr.modules.ConvASRDecoder
+      feat_in: null
+      num_classes: -1
+      vocabulary: []
+    decoding:
+      strategy: greedy
+
+  interctc:
+    loss_weights: []
+    apply_at_layers: []
+
+  loss:
+    loss_name: pytorch
+
+  optim:
+    name: adamw
+    lr: 0.001
+    betas: [0.9, 0.98]
+    weight_decay: 1e-3
+    sched:
+      name: CosineAnnealing
+      warmup_steps: 500
+      warmup_ratio: null
+      min_lr: 1e-6
+
+trainer:
+  devices: 1
+  accelerator: gpu
+  max_epochs: 10
+  precision: 16
+  val_check_interval: 1.0
+  accumulate_grad_batches: 1
+  gradient_clip_val: 1.0
+  log_every_n_steps: 10
+  enable_progress_bar: true
+  num_sanity_val_steps: 0
+  check_val_every_n_epoch: 1
+  sync_batchnorm: true
+  enable_checkpointing: false
+  logger: false
+  benchmark: false
+
+#logging & checkpoints
+exp_manager:
+  exp_dir: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/finetune_results"
+  name: "${name}"
+  create_tensorboard_logger: false
+  create_checkpoint_callback: true
+  checkpoint_callback_params:
+    monitor: val_wer
+    mode: min
+    save_top_k: 5
+    always_save_nemo: true
+  resume_from_checkpoint: null
+  resume_if_exists: false
+  resume_ignore_no_checkpoint: false
+  create_wandb_logger: false
+  wandb_logger_kwargs:
+    name: null
+    project: null

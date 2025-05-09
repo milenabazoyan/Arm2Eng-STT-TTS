@@ -40,7 +40,7 @@ curl -X POST "http://localhost:8080/translations/audio?model=your_tts" \
 ```
 This is the expected output of **Your TTS** model
 
-[your_tts_output.webm](https://github.com/user-attachments/assets/15ab314a-8990-4b5a-9b1e-54926cad4dc5)
+[your_tts_output.webm](https://github.com/user-attachments/assets/4039cfa1-8ec3-4d74-a9e4-a1647e93f83d)
 
 ```sh
 curl -X POST "http://localhost:8080/translations/audio?model=bark&gender=male" \

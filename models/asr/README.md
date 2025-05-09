@@ -17,6 +17,9 @@ This module provides a fine-tuned ASR model for Armenian based on NVIDIA's FastC
 
 ### 1. Data Preprocessing
 
+To access the `.wav` audio data used for training, visit the following Google Drive folder:  
+[Armenian ASR Audio Dataset](https://drive.google.com/drive/u/0/folders/1HWpB0iMj1EcJldwR3Q5gHbjUiL-wDRiq)
+
 Run `preprocess.ipynb` to:
 - Normalize and clean text.
 - Filter audio files by duration (0.5s–15s).

@@ -23,7 +23,7 @@ Now since you have Python version 3.10.13 and AWS account set up you need to
 1) `cd api`
 2) `python -m venv my_venv`
 3) `source my_venv/bin/activate`
-4) `pip install -r requirements.txt`
+4) `install_required_packages.sh` (requirements.txt file is not used to avoid package version conflicts such as `ERROR: Cannot install -r requirements.txt (line 67) and networkx==3.3 because these package versions have conflicting dependencies.`)
 5) `python run.py`
 6) `cd ../ui`
 7) `open index.html`

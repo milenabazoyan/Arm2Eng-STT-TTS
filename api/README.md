@@ -14,14 +14,14 @@ The pipeline consists of 3 phases:
 First of all you need to have python version 3.10.13 and AWS account set up in your local CLI (if you do not have any account please check the **AWS Guide** section down below).
 1) `python -m venv my_venv`
 2) `source my_venv/bin/activate`
-3) `pip install -r requirements.txt`
+3) `install_required_packages.sh` (requirements.txt file is not used to avoid package version conflicts such as `ERROR: Cannot install -r requirements.txt (line 67) and networkx==3.3 because these package versions have conflicting dependencies.`)
 4) `python run.py`
 NOTE: to close venv please type `deactivate` in your command line
 
 To test you can send the following test example:
 
 <audio controls>
-  <source src="./resources/test/common_voice_hy-AM_41864771.wav" type="audio/wav">
+  <source src="https://github.com/milenabazoyan/Arm2Eng-STT-TTS/blob/main/api/resources/test/common_voice_hy-AM_41864771.wav" type="audio/wav">
   Your browser does not support the audio element.
 </audio>
 

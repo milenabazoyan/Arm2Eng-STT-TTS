@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Translator - Armenian to English</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.min.js"></script>
+  <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/wav-encoder@1.6.0/build/wav-encoder.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Armenian to English Speech Translator</h1>
+    <p>
+      Record your voice in Armenian, and this application will translate it into English
+      and return the translated speech as audio. You can record up to <strong>30 seconds</strong> of audio per request.
+      <br><br>
+      There are <strong>three models</strong> to choose from for the output English speech:
+      <strong>Fast Pitch</strong> offers fast and high-quality synthesis,
+      <strong>Your TTS</strong> supports speaker adaptation, it will speak in your voice,
+      and <strong>Bark</strong> allows selecting between <em>male</em> and <em>female</em> voices.
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="model-selector">
+      <label for="modelSelect">Choose Voice Model</label>
+      <select id="modelSelect">
+        <option value="fast_pitch">Fast Pitch</option>
+        <option value="your_tts">Your TTS</option>
+        <option value="bark">Bark</option>
+      </select>
+    </div>
+
+    <div class="speaker-selector" id="speakerSelector" style="display: none;">
+      <label>Choose Speaker Gender</label>
+      <div class="speaker-options">
+        <button id="femaleBtn" class="speaker-btn" title="To use gender selection, choose model 'bark'">Female</button>
+        <button id="maleBtn" class="speaker-btn" title="To use gender selection, choose model 'bark'">Male</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Start Recording</button>
+      <button id="stopBtn" disabled>Stop Recording</button>
+    </div>
+
+    <canvas id="waveform" width="500" height="120"></canvas>
+    <div id="timer">30s</div>
+
+    <h2>Translated Audio</h2>
+    <audio id="responseAudio" controls></audio>
+
+    <!-- Inline loading indicator -->
+    <div id="loadingInline" class="loading-inline" style="display: none;">
+      <div class="spinner"></div>
+      <p>Translating...</p>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
+

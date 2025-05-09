@@ -20,7 +20,7 @@ if we choose English text to speech model as Fast Pitch we get
 
 if we choose English text to speech model as Your TTS we get
 
-[your_tts_output.webm](https://github.com/user-attachments/assets/f8a797dd-640f-47ff-8a17-ffd1d0115814)
+[your_tts_output.webm](https://github.com/user-attachments/assets/ff1a2a2f-e0c8-4eb8-9b02-0d2a89d10ff7)
 
 if we choose English text to speech model as Bark using female sound we get
 

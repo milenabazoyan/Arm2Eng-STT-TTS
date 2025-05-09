@@ -44,19 +44,19 @@ aws_secret_access_key = YOUR_SECRET_KEY
 region = us-east-1
 
 Now since you have Python version 3.10.13 and AWS account set up you need to
-1) cd api
-2) python -m venv my_venv
-3) source my_venv/bin/activate
-4) install_required_packages.sh (requirements.txt file is not used to avoid package version conflicts such as `ERROR: Cannot install -r requirements.txt (line 67) and networkx==3.3 because these package versions have conflicting dependencies.`)
-5) python run.py
-6) cd ../ui
-7) open index.html
+1) `cd api`
+2) `python -m venv my_venv`
+3) `source my_venv/bin/activate`
+4) `install_required_packages.sh` (requirements.txt file is not used to avoid package version conflicts such as `ERROR: Cannot install -r requirements.txt (line 67) and networkx==3.3 because these package versions have conflicting dependencies.`)
+5) `python run.py`
+6) `cd ../ui`
+7) `open index.html`
 NOTE: to close venv please type deactivate in your command line
 
 ## For More Information
 Each module's directory has its own README.md file which you can read one by one:
 
-See README in asr model
-See README in tts model
-See README in api
-See README in ui
+[See README in asr model](models/asr/README.md)
+[See README in tts model](models/tts/README.md)
+[See README in api](api/README.md)
+[See README in ui](ui/README.md)

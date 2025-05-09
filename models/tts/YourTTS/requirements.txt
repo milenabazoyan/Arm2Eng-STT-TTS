@@ -1,0 +1,5 @@
+TTS==0.22.0
+numpy==1.24.4
+torchaudio==2.1.0
+soundfile
+matplotlib

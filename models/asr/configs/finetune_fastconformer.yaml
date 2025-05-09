@@ -1,10 +1,12 @@
----
+# === Define your local paths here ===
+DATA_ROOT: "../data"
+TOKENIZER_DIR: "../tokenizer"
+
 name: "FastConformer-Hybrid-Transducer-CTC-BPE-Finetuning"
 
 init_from_nemo_model:
   model0:
-    path: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/stt_hy_fastconformer_hybrid_large_pc.nemo"
-
+    path: "${DATA_ROOT}/stt_hy_fastconformer_hybrid_large_pc.nemo"
 
 model:
   sample_rate: 16000
@@ -18,7 +20,7 @@ model:
     joint_hidden: 640
 
   train_ds:
-    manifest_filepath: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/manifest_train_abs.jsonl"
+    manifest_filepath: "${DATA_ROOT}/manifest_train_abs.jsonl"
     sample_rate: ${model.sample_rate}
     batch_size: 32
     shuffle: true
@@ -33,7 +35,7 @@ model:
     bucketing_batch_size: null
 
   validation_ds:
-    manifest_filepath: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/manifest_val_abs.jsonl"
+    manifest_filepath: "${DATA_ROOT}/manifest_val_abs.jsonl"
     sample_rate: ${model.sample_rate}
     batch_size: 16
     shuffle: false
@@ -42,7 +44,7 @@ model:
     pin_memory: true
 
   test_ds:
-    manifest_filepath: null
+    manifest_filepath: "${DATA_ROOT}/test_manifest.jsonl"
     sample_rate: ${model.sample_rate}
     batch_size: 16
     shuffle: false
@@ -51,11 +53,11 @@ model:
     pin_memory: true
 
   tokenizer:
-    dir: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM"
+    dir: "${DATA_ROOT}"
     type: bpe
-    model_path: "/content/drive/MyDrive/Capstone/tokenizer/56c7ec45a6a84b258c1d87417ed8672e_tokenizer.model"
-    vocab_path: "/content/drive/MyDrive/Capstone/tokenizer/a66c4311cce54386973571e261fd4b32_vocab.txt"
-    spe_tokenizer_vocab: "/content/drive/MyDrive/Capstone/tokenizer/9482a6c252f94776b9e1b86bbca8963f_tokenizer.vocab"
+    model_path: "${TOKENIZER_DIR}/tokenizer.model"
+    vocab_path: "${TOKENIZER_DIR}/vocab.txt"
+    spe_tokenizer_vocab: "${TOKENIZER_DIR}/tokenizer.vocab"
 
   preprocessor:
     _target_: nemo.collections.asr.modules.AudioToMelSpectrogramPreprocessor
@@ -106,7 +108,6 @@ model:
 
   decoder:
     _target_: nemo.collections.asr.modules.RNNTDecoder
-    normalization_mode: null
     random_state_sampling: false
     blank_as_pad: true
     prednet:
@@ -129,7 +130,7 @@ model:
   decoding:
     strategy: greedy_batch
     greedy:
-      max_symbols: 10
+      max_symbols: 20
     beam:
       beam_size: 2
       return_best_hypothesis: false
@@ -145,7 +146,6 @@ model:
       _target_: nemo.collections.asr.modules.ConvASRDecoder
       feat_in: null
       num_classes: -1
-      vocabulary: []
     decoding:
       strategy: greedy
 
@@ -170,7 +170,7 @@ model:
 trainer:
   devices: 1
   accelerator: gpu
-  max_epochs: 10
+  max_epochs: 20
   precision: 16
   val_check_interval: 1.0
   accumulate_grad_batches: 1
@@ -184,9 +184,8 @@ trainer:
   logger: false
   benchmark: false
 
-#logging & checkpoints
 exp_manager:
-  exp_dir: "/content/drive/MyDrive/Capstone/cv-corpus-20.0-2024-12-06/hy-AM/finetune_results"
+  exp_dir: "${DATA_ROOT}/finetune_results"
   name: "${name}"
   create_tensorboard_logger: false
   create_checkpoint_callback: true
@@ -202,3 +201,4 @@ exp_manager:
   wandb_logger_kwargs:
     name: null
     project: null
+

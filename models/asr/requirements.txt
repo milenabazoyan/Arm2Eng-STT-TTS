@@ -1,11 +1,11 @@
-nemo_toolkit[all] >=1.22.0. #you can use nemo_toolkit[asr] for a lighter version
-pytorch-lightning >=2.0.0,<2.2.0
+nemo_toolkit[all]==1.21.0 #you can use nemo_toolkit[asr] for a lighter version
+pytorch-lightning>=2.0.0
 torch >=1.13.0,<=2.2.0
 torchaudio >=0.10.0
 transformers >=4.26.0
 huggingface_hub >=0.24.0
 
-numpy ==1.24.3
+numpy==1.24.3
 numba ==0.61.0
 protobuf ==4.24.4
 onnx >=1.7.0

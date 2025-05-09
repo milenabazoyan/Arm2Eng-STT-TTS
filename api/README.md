@@ -20,10 +20,7 @@ NOTE: to close venv please type `deactivate` in your command line
 
 To test you can send the following test example:
 
-<audio controls>
-  <source src="https://github.com/milenabazoyan/Arm2Eng-STT-TTS/blob/main/api/resources/test/common_voice_hy-AM_41864771.wav" type="audio/wav">
-  Your browser does not support the audio element.
-</audio>
+[input_speech_example_for_readme.webm](https://github.com/user-attachments/assets/c1347cc7-8f5f-4c81-b71c-c8f49b883a5f)
 
 ```sh
 curl -X POST "http://localhost:8080/translations/audio?model=fast_pitch" \
@@ -33,10 +30,7 @@ curl -X POST "http://localhost:8080/translations/audio?model=fast_pitch" \
 ```
 This is the expected output of **Fast Pitch** model
 
-<audio controls>
-  <source src="./resources/test/fast_pitch_output.wav" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+[fast_pitch_output.webm](https://github.com/user-attachments/assets/147a7180-1814-4998-9296-736f5aad6b41)
 
 ```sh
 curl -X POST "http://localhost:8080/translations/audio?model=your_tts" \
@@ -46,10 +40,7 @@ curl -X POST "http://localhost:8080/translations/audio?model=your_tts" \
 ```
 This is the expected output of **Your TTS** model
 
-<audio controls>
-  <source src="./resources/test/your_tts_output.wav" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+[your_tts_output.webm](https://github.com/user-attachments/assets/15ab314a-8990-4b5a-9b1e-54926cad4dc5)
 
 ```sh
 curl -X POST "http://localhost:8080/translations/audio?model=bark&gender=male" \
@@ -59,10 +50,7 @@ curl -X POST "http://localhost:8080/translations/audio?model=bark&gender=male" \
 ```
 This is the expected output of **Bark** model using *female* sound
 
-<audio controls>
-  <source src="./resources/test/bark_male.wav" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+[bark_female_output.webm](https://github.com/user-attachments/assets/397a8e44-09c0-40a3-a2d8-25d5bc5cf221)
 
 ```sh
 curl -X POST "http://localhost:8080/translations/audio?model=bark&gender=female" \
@@ -72,10 +60,7 @@ curl -X POST "http://localhost:8080/translations/audio?model=bark&gender=female"
 ```
 This is the expected output of **Bark** model using *male* sound
 
-<audio controls>
-  <source src="./resources/test/bark_female.wav" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+[bark_male_output.webm](https://github.com/user-attachments/assets/21cb9aa8-76fd-476a-8148-3d319435672a)
 
 ## AWS Guide
 -   Sign up or log in at [https://aws.amazon.com (https://aws.amazon.com).   
